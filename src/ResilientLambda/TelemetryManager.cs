@@ -93,8 +93,8 @@ public static class TelemetryManager
     {
         SnsRetries.Add(1, new KeyValuePair<string, object>[]
         {
-            new KeyValuePair<string, object>("error_type", errorType),
-            new KeyValuePair<string, object>("attempt_number", attemptNumber)
+            new("error_type", errorType),
+            new("attempt_number", attemptNumber)
         });
     }
 

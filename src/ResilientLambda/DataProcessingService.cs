@@ -13,24 +13,16 @@ public interface IDataProcessor
     Task ProcessAndPublishDataAsync();
 }
 
-public class DataProcessor : IDataProcessor
+public class DataProcessor(
+    IDataRepository dataRepository,
+    IDataTransformer dataTransformer,
+    IResilientSnsPublisher snsPublisher,
+    ILogger<DataProcessor> logger) : IDataProcessor
 {
-    private readonly IDataRepository _dataRepository;
-    private readonly IDataTransformer _dataTransformer;
-    private readonly IResilientSnsPublisher _snsPublisher;
-    private readonly ILogger<DataProcessor> _logger;
-
-    public DataProcessor(
-        IDataRepository dataRepository,
-        IDataTransformer dataTransformer,
-        IResilientSnsPublisher snsPublisher,
-        ILogger<DataProcessor> logger)
-    {
-        _dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
-        _dataTransformer = dataTransformer ?? throw new ArgumentNullException(nameof(dataTransformer));
-        _snsPublisher = snsPublisher ?? throw new ArgumentNullException(nameof(snsPublisher));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly IDataRepository _dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+    private readonly IDataTransformer _dataTransformer = dataTransformer ?? throw new ArgumentNullException(nameof(dataTransformer));
+    private readonly IResilientSnsPublisher _snsPublisher = snsPublisher ?? throw new ArgumentNullException(nameof(snsPublisher));
+    private readonly ILogger<DataProcessor> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task ProcessAndPublishDataAsync()
     {
